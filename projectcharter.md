@@ -1,6 +1,6 @@
-# Project Title: **Home Automation System** (Name Pending)
-# Team: *Jene Li, Michelle Nguyen, Jacob Minyoung Huh*
-# EECS 149/249A Project Charter, Fall, 2014
+## Project Title: **Home Automation System** (Name Pending)
+## Team: *Jene Li, Michelle Nguyen, Jacob Minyoung Huh*
+## EECS 149/249A Project Charter, Fall, 2014
 
 ## **Project Goal**
 The goal of this project is to create a network of simple sensors and actuators that attempt to solve many of the problems associated with managing a living space. We will focus our design on a system that is easily accessible, compatible with a wide array of hardware devices, and expandable.
