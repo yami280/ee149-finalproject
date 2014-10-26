@@ -3,13 +3,13 @@
 ## EECS 149/249A Project Charter, Fall, 2014
 
 ## **Project Goal**
-The goal of this project is to create a network of simple sensors and actuators that attempt to solve many of the problems associated with managing a living space. We will focus our design on a system that is easily accessible, compatible with a wide array of hardware devices, and expandable.
+The goal of this project is to create a networked home automation system that contains sensors that interact with each other and work together to create useful datasets. A secondary goal of this project is to solve some of the problems with home automation system adoption that many implementations face today. 
 
 ## **Project Approach**
-The project will be comprised of many small microcontrollers with various sensors relaying information to a webserver hosted on the cloud. Each microcontroller will contain a subset of sensors and actuators that can be configured to perform multiple home automation tasks.
+This project will consist of three main modules. We will develop a backend software layer module to facilitate the collaboration of the sensors and control of the actuators. There will be a communications layer that hooks together the various network interfaces such as Bluetooth, XBee, NFC, RFID, or WiFi to send messages to and from the software layer. Lastly, we will be implementing one sensor/actuator pair as a proof of concept of this central home automation hub design.
 
 ## **Resources**
-After some research, we have decided that we will use the Intel Galileo microprocessor along with some smaller cheaper boards to create the array of sensor/actuator devices. We need to ensure that all the boards have wireless connectivity in order to connect to the cloud. Afterwards, we will look into what sensors we wish to add onto each device. The current plan is to include visual and pressure sensors.
+After some research, we have decided that we will use the Intel Galileo microprocessor along with some smaller cheaper boards to create the array of sensor/actuator devices. We need to ensure that all the boards have wireless connectivity in order to connect to the cloud. Afterwards, we will look into what sensors we wish to add onto each device. The current plan is to include visual and pressure sensors. Another idea for sensor actuator pairs is a door sensor that detect the identity of whoever walks through based on Bluetooth LE connections. This will trigger an event within the main software layer to send to the individual. 
 
 ## **Schedule**
 * October 21: Project charter (this document)
