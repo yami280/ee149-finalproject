@@ -1,0 +1,23 @@
+To run the server: 
+./server.py
+This will start a server on http://localhost:8080/.
+
+Right now, since we're just doing a simple demo, there's no need for having a fullblown database,
+so I'm just saving everything in a simple text file called door_status.txt where the first line
+is a boolean for whether the door is open, and the second is the userid of who opened the door.
+Later, when we have different kinds of GET or POST requests, we might want to use an XML instead 
+or something.
+
+GET requests:
+-If you make a GET request to http://localhost:8080/, it will show you one of the following:
+The door is closed.
+The door is open, and has been opened by _______.
+
+POST requests:
+-If you make a POST request, your params should be in the format: userid=1234&event=1
+-To make a POST request from the terminal:
+curl --data "userid=1234&event=1" http://localhost:8080/
+This will change the message to:
+The door is open, and has been opened by 1234.
+I have no idea how you're going to be doing the POST request from your end, so this might not work with that.
+Just let me know when your part is done and I'll try to figure out how to make it work with that.
