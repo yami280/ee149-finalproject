@@ -18,15 +18,25 @@ class Door:
         Returns information about whether the door was open, and who
         opened the door.
         """
-        status_file = open(FILENAME, "r")
-        status = status_file.read()
-        status_file.close()
-        status = status.split("\n")
-        if len(status) > 0:
-            if int(status[0]):
-                return "The door is open, and has been opened by {0}.".format(status[1])
+        query = web.input()
+        if len(query) > 0:
+            if "event" in query and int(query["event"]) == 1:
+                new_status = "1\n{0}".format(query["userid"])
             else:
-                return "The door is closed."
+                new_status = "0\n"
+            status_file = open(FILENAME, "w")
+            status_file.write(new_status)
+            status_file.close()
+        else:
+            status_file = open(FILENAME, "r")
+            status = status_file.read()
+            status_file.close()
+            status = status.split("\n")
+            if len(status) > 0:
+                if int(status[0]):
+                    return "The door is open, and has been opened by {0}.".format(status[1])
+                else:
+                    return "The door is closed."
 
 
     def POST(self, request):
