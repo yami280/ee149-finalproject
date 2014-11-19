@@ -9,7 +9,6 @@ urls = (
     '/(.*)', 'Door'
 )
 
-app = web.application(urls, globals())
 
 class Door:
 
@@ -49,6 +48,11 @@ class Door:
         status_file.write(new_status)
         status_file.close()
 
+class MyApplication(web.application):
+    def run(self, port=8080, *middleware):
+        func = self.wsgifunc(*middleware)
+        return web.httpserver.runsimple(func, ('0.0.0.0', port))
 
+app = MyApplication(urls, globals())
 if __name__ == "__main__":
     app.run(port=5000)
