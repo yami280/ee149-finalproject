@@ -9,7 +9,7 @@ urls = (
     '/(.*)', 'Door'
 )
 
-app = web.application(urls, globals())
+app = web.application(urls, globals(), port=5000)
 
 class Door:
 
