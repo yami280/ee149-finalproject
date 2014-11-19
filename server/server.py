@@ -9,7 +9,7 @@ urls = (
     '/(.*)', 'Door'
 )
 
-app = web.application(urls, globals(), port=5000)
+app = web.application(urls, globals())
 
 class Door:
 
@@ -51,4 +51,4 @@ class Door:
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(port=5000)
