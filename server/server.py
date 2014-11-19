@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import web
+import os
 
 #tree = ET.parse('user_data.xml')
 #root = tree.getroot()
@@ -55,4 +56,5 @@ class MyApplication(web.application):
 
 app = MyApplication(urls, globals())
 if __name__ == "__main__":
-    app.run(port=5000)
+    heroku_port = int(os.environ.get('PORT', 8080))
+    app.run(port=heroku_port)
