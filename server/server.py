@@ -4,7 +4,7 @@ import os
 
 #tree = ET.parse('user_data.xml')
 #root = tree.getroot()
-
+FILENAME = "server/door_status.txt"
 urls = (
     #'/door/(.*)', 'Door'
     '/(.*)', 'Door'
@@ -18,7 +18,7 @@ class Door:
         Returns information about whether the door was open, and who
         opened the door.
         """
-        status_file = open("door_status.txt", "r")
+        status_file = open(FILENAME, "r")
         status = status_file.read()
         status_file.close()
         status = status.split("\n")
@@ -45,7 +45,7 @@ class Door:
         else:
             new_status = "0\n"
 
-        status_file = open("door_status.txt", "w")
+        status_file = open(FILENAME, "w")
         status_file.write(new_status)
         status_file.close()
 
