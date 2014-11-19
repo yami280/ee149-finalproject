@@ -1,14 +1,23 @@
 #!/usr/bin/env python
 import web
 import os
+import gcm
 
 #tree = ET.parse('user_data.xml')
 #root = tree.getroot()
 FILENAME = "server/door_status.txt"
+API_KEY = "AIzaSyB9tJ985sfq2oDkjH0VM1lLxhKgCmo_xpw"
+PHONE_ID = "APA91bFlFed9Us8rqFTk2Isat19-PrkLq2yCKQjtXjdH3g7z8V9SllmR-ZfemzCkpRXl7-XrWKekCkHBmclJb9BQSgWLa1sJ7qLaa_7JjBwEoJxdBNZ6yFJUG2lAR58F1tN3-0HJreqxRzpJUMYq07IYUj15lL3eeQ"
+
 urls = (
     #'/door/(.*)', 'Door'
     '/(.*)', 'Door'
 )
+
+def send_gcm():
+    gcm_fn = gcm.GCM(API_KEY)
+    data = {'message': 'You have to take out the trash!'}
+    gcm_fn.plaintext_request(registration_id=PHONE_ID, data=data)
 
 
 class Door:
@@ -22,6 +31,7 @@ class Door:
         if len(query) > 0:
             if "event" in query and int(query["event"]) == 1:
                 new_status = "1\n{0}".format(query["userid"])
+                send_gcm()
             else:
                 new_status = "0\n"
             status_file = open(FILENAME, "w")
