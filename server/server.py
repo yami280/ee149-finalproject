@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 import web
-import xml.etree.ElementTree as ET
 
 #tree = ET.parse('user_data.xml')
 #root = tree.getroot()
@@ -12,7 +11,7 @@ urls = (
 
 app = web.application(urls, globals())
 
-class Door:       
+class Door:
 
     def GET(self, request):
         """Handles GET requests at /door/.*
@@ -24,9 +23,9 @@ class Door:
         status_file.close()
         status = status.split("\n")
         if len(status) > 0:
-            if int(status[0]): 
+            if int(status[0]):
                 return "The door is open, and has been opened by {0}.".format(status[1])
-            else: 
+            else:
                 return "The door is closed."
 
 
