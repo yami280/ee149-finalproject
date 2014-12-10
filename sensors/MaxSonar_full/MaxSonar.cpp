@@ -25,7 +25,7 @@
  * Implementation of MaxSonar class.
  */
 
-/** Code has been modified by Min
+/** Code by modified by Min
 *
 * @Hook up Guide
 * Hook up 5v and GND as usual
@@ -40,17 +40,13 @@
 
 Serial pc(USBTX, USBRX);
  
-MaxSonar::MaxSonar(enum MSType type, enum MSMode mode, PinName pin1, PinName pin2) {
+MaxSonar::MaxSonar(PinName pin1, PinName pin2) {
     
     // Set some defaults common to all devices.
     this->units = MS_CM;
     this->voltage = 3.3;
     this->ain = NULL;
     this->rx_req = NULL;
-
-    // Save settings.
-    this->type = type;
-    this->mode = mode;
 
     this->analog_scale = 512;
 
@@ -99,12 +95,7 @@ float MaxSonar::read(void) {
         
         case MS_INCH:
             break;
-            
-        default:
-            error("MaxSonar: Currently unsupported.\n");
-            break;
     }
-    
     return range;
 }
 
@@ -117,10 +108,12 @@ int main() {
     pc.baud(9600);
     MaxSonar *proximity;
     float r;
+    
     // Create and configure object for 3.3V powered LV-series device, 
-    proximity = new MaxSonar(MS_LV, MS_ANALOG, trigger_pin, analog_read_pin);
+    proximity = new MaxSonar(trigger_pin, analog_read_pin);
     proximity->setVoltage(5.0); //Set voltage so gain is evaluated accordingly
     proximity->setUnits(MS_CM); //Measure in CM
+    
     while(1) {
         // Trigger read, wait 49ms until ranger finder has finished the read then read. 
         proximity->triggerRead();

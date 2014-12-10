@@ -37,66 +37,15 @@
 
 #include "mbed.h"
 
-//! Define types of MaxSonar devices.
-enum MSType {
-    MS_LV = 0,      //!< Supported.
-    MS_WR,          //!< Not supported yet.
-    MS_WRC,         //!< Not supported yet.
-    MS_XL,          //!< Not supported yet.
-    MS_XL_AE        //!< Not supported yet.
-};
-
 //! Define units for returning range.
 enum MSUnits {
     MS_CM = 0,      //!< centimeters.
     MS_INCH         //!< inches.
 };
 
-//! Define access mode for obtaining range measurement.
-enum MSMode {
-    MS_ANALOG = 0,  //!< Supported.
-    MS_SERIAL,      //!< Not supported yet.
-    MS_PWM          //!< Not supported yet.
-};
-
-/**
- * Class to read range measurements from MaxBotix MaxSonar
- * range-finder devices.
- *
- * Example
- * @code
- * #include "mbed.h"
- * #include "MaxSonar.h"
- * 
- * int main() {
- *     MaxSonar *range;
- *     float r;
- *
- *     // Create and configure object for 3.3V powered LV-series device, 
- *     // accessed with analog reads (in cm) on p16, triggered by p7.
- *     range = new MaxSonar(MS_LV, MS_ANALOG, p7, p16);
- *     range->setVoltage(3.3);
- *     range->setUnits(MS_CM);
- *
- *     while(1) {
- *         // Trigger read, wait 49ms until ranger finder has
- *         // finished, then read. 
- *         range->triggerRead();
- *         wait_ms(49);
- *         r = range->read();
- *       
- *         // Print and delay 0.5s.
- *         printf("Range: %.3f cm\n", r);
- *         wait(0.5);
- *     }
- * }
- * @endcode 
- */
 class MaxSonar {
 
 private:
-    enum MSType type;           //!< Device type. 
-    enum MSMode mode;           //!< Range reading mode.
     enum MSUnits units;         //!< Range units.
     float voltage;              //!< Supply/reference voltage (V).
     int analog_scale;           //!< resolution = voltage/scale.
@@ -108,8 +57,6 @@ public:
     /**
      * Constructor.
      *
-     * @param   type    The type of device.
-     * @param   mode    The access mode.
      * @param   pin1    MS_ANALOG: Pin connected to RX of device.
      *                  MS_SERIAL: Pin connected to RX of device.
      *                  MS_PWM: Pin connected to RX of device.
@@ -120,8 +67,7 @@ public:
      *          when in analog or pwm mode.
      * @note    Default units are in cm (MS_CM).
      */
-    MaxSonar(enum MSType type, enum MSMode mode,
-             PinName pin1, PinName pin2);
+    MaxSonar(PinName pin1, PinName pin2);
 
     /**
      * Destructor.

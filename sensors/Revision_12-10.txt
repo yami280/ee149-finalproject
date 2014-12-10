@@ -1,0 +1,53 @@
+***Library Specifications***
+
+note: Different sensors require different voltages, and different protocols
+
+BMP180 - Atmospheric Pressure Sensor (I2C Protocol)
+HIH6130 - Temperature and Humidity Sensor (I2C Protocol)
+MaxSonar - Long Range Proximity Sensor (I2C Protocol)
+MQ-2 - Combustable Gas Sensor (Analog)
+MQ-7 - Carbon Monoxide Sensor (Analog)
+SoundDetector - Sound Detector (Analog)
+TSL2561_I2C - Luminosity Sesnsor (I2C Protocol)
+
+@update
+removed:
+	VCNL4000 - Close proximity sensor
+	ITG3200 - Gyro sensor
+reason:
+	Faulty Sensors
+
+renamed:
+	TSL2561_I2C -> TSL2561
+
+@todo
+Create libraries for MQ2 and MQ7
+
+
+***Possible Applications***
+Maybe to show what it is used for
+
+Basic Household data
+
+Dust sensor
+Monoxide sensor
+Environment Pressure
+Temperature
+Humidity
+
+eg:
+Show the recommended values for these
+Maybe if these values are not met, we can give hints on what to do
+Or warning messages directly to your phone! Especially for monoxide and Dust sensor !!!
+
+
+Life Chore data
+
+Proximity sensor (long distance)
+Luminosity
+Sound
+
+eg:
+Luminosity sensor to tell how sunny today will be? What else can it be used? Not sure
+Sound sensor - Detect if someone breaks in?
+Proximity sensor - Show maybe garbages is full, mail came.
