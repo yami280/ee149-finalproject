@@ -1,73 +1,48 @@
 #!/usr/bin/env python
 import web
 import os
-import gcm
 
-#tree = ET.parse('user_data.xml')
-#root = tree.getroot()
-FILENAME = "server/door_status.txt"
-API_KEY = "AIzaSyB9tJ985sfq2oDkjH0VM1lLxhKgCmo_xpw"
-PHONE_ID = "APA91bFlFed9Us8rqFTk2Isat19-PrkLq2yCKQjtXjdH3g7z8V9SllmR-ZfemzCkpRXl7-XrWKekCkHBmclJb9BQSgWLa1sJ7qLaa_7JjBwEoJxdBNZ6yFJUG2lAR58F1tN3-0HJreqxRzpJUMYq07IYUj15lL3eeQ"
+DIRECTORY = "server/"
 
 urls = (
     #'/door/(.*)', 'Door'
-    '/(.*)', 'Door'
+    '/(.*)', 'Server'
 )
 
-def send_gcm():
-    gcm_fn = gcm.GCM(API_KEY)
-    data = {'message': 'You have to take out the trash!'}
-    gcm_fn.plaintext_request(registration_id=PHONE_ID, data=data)
-
-
-class Door:
+class Server:
 
     def GET(self, request):
-        """Handles GET requests at /door/.*
-        Returns information about whether the door was open, and who
-        opened the door.
+        """Handles GET requests.
         """
         query = web.input()
-        if len(query) > 0:
-            if "event" in query and int(query["event"]) == 1:
-                new_status = "1\n{0}".format(query["userid"])
-                send_gcm()
+        if len(query) > 0: 
+            if "sensor" in query and "value" in query:
+                status_file = open(DIRECTORY+query["sensor"]+".txt", "a+")
+                status_file.write(query["value"]+"\n")
+                status_file.seek(0, os.SEEK_SET)
+                ret_id = len(status_file.read().split("\n")) - 1
+                status_file.close()
+                return ret_id
+        else:
+            path = web.ctx.fullpath[1:]
+            path = path.split("/")
+            print path
+            if len(path) > 1 and path[1] != "":
+                idx = int(path[1])-1
             else:
-                new_status = "0\n"
-            status_file = open(FILENAME, "w")
-            status_file.write(new_status)
-            status_file.close()
-        else:
-            status_file = open(FILENAME, "r")
-            status = status_file.read()
-            status_file.close()
-            status = status.split("\n")
-            if len(status) > 0:
-                if int(status[0]):
-                    return "The door is open, and has been opened by {0}.".format(status[1])
+                idx = None
+            if os.path.isfile(DIRECTORY+path[0]+".txt"):
+                status_file = open(DIRECTORY+path[0]+".txt", "r")
+                lines = status_file.read().split("\n")
+                status_file.close()
+                lines.pop()
+                if idx == None:
+                    return lines
+                elif idx > len(lines):
+                    return
                 else:
-                    return "The door is closed."
-
-
-    def POST(self, request):
-        """Handles POST requests at /door/.*
-        Params for POST: userid=___&event=0|1
-        Updates whether the door is open, and who opened the door.
-        """
-        data = web.data()
-        data = data.split("&")
-        status_dict = {}
-        for d in data:
-            status_dict[d[:d.find("=")]] = d[d.find("=")+1:]
-        print status_dict
-        if "event" in status_dict and int(status_dict["event"]) == 1:
-            new_status = "1\n{0}".format(status_dict["userid"])
-        else:
-            new_status = "0\n"
-
-        status_file = open(FILENAME, "w")
-        status_file.write(new_status)
-        status_file.close()
+                    return lines[idx]
+                
 
 class MyApplication(web.application):
     def run(self, port=8080, *middleware):
