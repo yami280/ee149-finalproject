@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import web
 import os
+import json
 
 DIRECTORY = "server/"
 
@@ -12,36 +13,37 @@ urls = (
 class Server:
 
     def GET(self, request):
-        """Handles GET requests.
-        """
         query = web.input()
         if len(query) > 0: 
-            if "sensor" in query and "value" in query:
+            if "sensor" in query and "value" in query and "id" in query:
                 status_file = open(DIRECTORY+query["sensor"]+".txt", "a+")
-                status_file.write(query["value"]+"\n")
                 status_file.seek(0, os.SEEK_SET)
-                ret_id = len(status_file.read().split("\n")) - 1
+                try:
+                    json_data = json.load(status_file)
+                except ValueError:
+                    json_data = {}
                 status_file.close()
-                return ret_id
+                json_data[query["id"]] = query["value"]
+                status_file = open(DIRECTORY+query["sensor"]+".txt", "w")
+                json.dump(json_data, status_file)
+                status_file.close()
+                return query["id"]
         else:
             path = web.ctx.fullpath[1:]
             path = path.split("/")
             print path
             if len(path) > 1 and path[1] != "":
-                idx = int(path[1])-1
+                idx = path[1]
             else:
                 idx = None
             if os.path.isfile(DIRECTORY+path[0]+".txt"):
                 status_file = open(DIRECTORY+path[0]+".txt", "r")
-                lines = status_file.read().split("\n")
+                json_data = json.load(status_file)
                 status_file.close()
-                lines.pop()
                 if idx == None:
-                    return lines
-                elif idx > len(lines):
-                    return
+                    return json_data
                 else:
-                    return lines[idx]
+                    return json_data[idx]
                 
 
 class MyApplication(web.application):
