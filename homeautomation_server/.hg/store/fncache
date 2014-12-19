@@ -1,0 +1,8 @@
+data/init.cpp.i
+data/NVIC_set_all_priorities.lib.i
+data/main.h.i
+data/cc3000_hostdriver_mbedsocket.lib.i
+data/main.cpp.i
+data/HTTPClient.lib.i
+data/SDFileSystem.lib.i
+data/mbed.bld.i
